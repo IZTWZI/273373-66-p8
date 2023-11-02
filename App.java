@@ -7,17 +7,23 @@ public class App {
   private static String password;
   private static String confirmPassword;
   private static String phone;
-  private static boolean chackLogin;
-  private static boolean chackRegister;
+  private static boolean chack;
 
   static Customer customer = new Customer();
   static Place_Status place_status = new Place_Status();
+  static Table table = new Table();
+  static Reservation reservation = new Reservation();
 
   public static void main(String[] args) {
-    chackLogin = false;
-    chackRegister = false;
+    chack = false;
 
+    //ใส่ค่าให้กับ table
+    int table_id[] = { 1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 };
+    String table_status[] = { "null", "null", "null", "null","null","null","null","null","null",
+    "null","null","null","null","null","null","null","null","null","null","null" };
+    table = new Table(table_id, table_status);
 
+    //เริ่มต้นแอพ
     RunApp();
   }
 
@@ -40,6 +46,7 @@ public class App {
       //displayEmployee();
     } else {
       displayMessageLine("try again.");
+      RunApp();
     }
   }
 
@@ -61,6 +68,7 @@ public class App {
       displayCustomerL();
     } else {
       displayMessageLine("try again.");
+      displayCustomerRL();
     }
   }
 
@@ -82,11 +90,11 @@ public class App {
       displayMessageLine("Passwords don't match");
       displayCustomerRL();
     } else {
-      chackRegister = registerCustomer(username, password, phone);
+      chack = customer.register(username, password, phone);
     }
 
     //ถ้า register ผ่านจะไปที่หน้าหลักของ Customer
-    if (chackRegister) {
+    if (chack) {
       displayCustomer();
     } else {
       displayCustomerR();
@@ -103,20 +111,19 @@ public class App {
     password = input();
 
     //ถ้า login ผ่านจะไปที่หน้าหลักของ Customer
-    chackLogin = customer.login(username, password);
-    if (chackLogin) {
+    chack = customer.login(username, password);
+    if (chack) {
       displayCustomer();
     } else {
-      displayCustomerL();
+      displayCustomerRL();
     }
   }
 
   //หน้าของ Customer หน้าหลักของ Customer
   public static void displayCustomer() {
-    
     displayLineCustomer();
-    displayMessageLine("Place_Status : "+place_status.Get_place_status());
-    displayMessageLine("Hi : "+customer.Get_person_username());
+    displayMessageLine("Place_Status : " + place_status.Get_place_status());
+    displayMessageLine("Hi : " + customer.Get_person_username());
     displayMessageLine("Please select a number.");
     displayMessageLine("(1) จองโต๊ะ");
     displayMessageLine("(2) ข้อมูลการจอง");
@@ -129,7 +136,7 @@ public class App {
     if (yourInput == 0) {
       displayCustomerRL();
     } else if (yourInput == 1) {
-      displayMessageLine("ยังไม่มี");
+      displayReservationTable();
     } else if (yourInput == 2) {
       displayMessageLine("ยังไม่มี");
     } else if (yourInput == 3) {
@@ -138,6 +145,31 @@ public class App {
       displayMessageLine("ยังไม่มี");
     } else {
       displayMessageLine("try again.");
+      displayCustomer();
+    }
+  }
+
+    //หน้าของ Customer หน้าหลักของ Customer
+  public static void displayReservationTable() {
+    displayLineCustomer();
+    displayMessageLine("Place_Status : " + place_status.Get_place_status());
+    displayMessageLine("Hi : " + customer.Get_person_username());
+    displayMessageLine("Please select a number.");
+    for (int i=0;i < table.Get_table_id().length;i++){
+      displayMessageLine("ID : "+(i+1)+" - Status : "+table.Get_table_status(i));
+    }
+    displayMessageLine("(0) Back");
+    displayMessage("Your input : ");
+    yourInput = inputInt();
+
+    if (yourInput == 0) {
+      displayCustomer();
+    } else if (yourInput >= 1 || yourInput <= 20) {
+      reservation.Save_table_reservation_information(yourInput,customer.Get_person_id());
+      table.Set_table_status(yourInput - 1);
+    } else {
+      displayMessageLine("try again.");
+      displayReservationTable();
     }
   }
 
@@ -173,23 +205,5 @@ public class App {
   //print ข้อความกั้นหน้าของ Customer
   public static void displayLineCustomer() {
     System.out.println("------------*Customer Page*------------");
-  }
-
-  //ตรวจสอบและ register
-  public static boolean registerCustomer(String username, String password, String phone) {
-    int chackU = customer.Get_person_usernames().indexOf(username);
-    int chackId = customer.Get_person_ids().size()-1;
-    int addId = chackId+1;
-
-    if (chackU > -1) {
-      displayMessageLine("Username already exists.");
-      return false;
-    } else {
-      customer.Set_person_id(addId);
-      customer.Set_person_username(username);
-      customer.Set_person_password(password);
-      customer.Set_phone(phone);
-      return true;
-    }
   }
 }
