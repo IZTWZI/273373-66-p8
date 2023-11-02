@@ -8,6 +8,7 @@ public class App {
   private static String confirmPassword;
   private static String phone;
   private static boolean chack;
+  private static String chack2;
 
   static Customer customer = new Customer();
   static Place_Status place_status = new Place_Status();
@@ -16,12 +17,6 @@ public class App {
 
   public static void main(String[] args) {
     chack = false;
-
-    //ใส่ค่าให้กับ table
-    int table_id[] = { 1, 2, 3, 4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20 };
-    String table_status[] = { "null", "null", "null", "null","null","null","null","null","null",
-    "null","null","null","null","null","null","null","null","null","null","null" };
-    table = new Table(table_id, table_status);
 
     //เริ่มต้นแอพ
     RunApp();
@@ -155,9 +150,7 @@ public class App {
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
     displayMessageLine("Hi : " + customer.Get_person_username());
     displayMessageLine("Please select a number.");
-    for (int i=0;i < table.Get_table_id().length;i++){
-      displayMessageLine("ID : "+(i+1)+" - Status : "+table.Get_table_status(i));
-    }
+    reservation.Check_table_status();
     displayMessageLine("(0) Back");
     displayMessage("Your input : ");
     yourInput = inputInt();
@@ -165,8 +158,14 @@ public class App {
     if (yourInput == 0) {
       displayCustomer();
     } else if (yourInput >= 1 || yourInput <= 20) {
-      reservation.Save_table_reservation_information(yourInput,customer.Get_person_id());
-      table.Set_table_status(yourInput - 1);
+      displayMessage("Enter Y to confirm : ");
+      chack2 = input();
+      if (chack2 == "Y"){
+        reservation.Save_table_reservation_information(yourInput,customer.Get_person_id());
+      }else {
+      displayMessageLine("try again.");
+      displayReservationTable();
+      }
     } else {
       displayMessageLine("try again.");
       displayReservationTable();
