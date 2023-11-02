@@ -1,5 +1,6 @@
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Reservation {
 
@@ -16,13 +17,23 @@ public class Reservation {
     }
   }
 
-  public void Save_table_reservation_information(int table_id, int customer_id) {
+  public Reservation(Customer customer) {
+    this.customer = customer;
+  }
+
+  public void Save_table_reservation_information(
+    int table_id,
+    int customer_id
+  ) {
+    //สุ่มเลข reserve_id
+    int randomNumber = ThreadLocalRandom.current().nextInt();
     // กำหนดข้อมูลการจอง
-    this.reserve_id = customer_id;
+    this.reserve_id = randomNumber;
     this.reserve_time = LocalTime.now();
     this.reserve_date = LocalDate.now();
+    int customerId = customer_id;
 
-    table[table_id].Set_table_status();
+    table[table_id-1].Set_table_status();
     Display_reservation();
   }
 
@@ -51,10 +62,28 @@ public class Reservation {
   public void Cancel_table_reservation(int reserve_id) {}
 
   public void Check_table_status() {
-    for (int i=0;i < 20;i++){
-        App.displayMessageLine("ID : "+(i+1)+" - Status : "+table[i].Get_table_status());
-     }
+    for (int i = 0; i < 20; i++) {
+      App.displayMessageLine(
+        "ID : " + (i + 1) + " - Status : " + table[i].Get_table_status()
+      );
+    }
   }
 
-  public void Display_reservation() {}
+  //หน้าของ ข้อมูลการจอง
+  public void Display_reservation() {
+    App.displayLineCustomer();
+    App.displayMessageLine("Reserve ID : " + reserve_id);
+    App.displayMessageLine("Date : " + reserve_date);
+    App.displayMessageLine("Time : " + reserve_time);
+    App.displayMessageLine("(0) Back");
+    App.displayMessage("Your input : ");
+    int yourInput = App.inputInt();
+
+    if (yourInput == 0) {
+      App.displayCustomer();
+    } else {
+      App.displayMessageLine("try again.");
+      Display_reservation();
+    }
+  }
 }

@@ -10,14 +10,20 @@ public class App {
   private static boolean chack;
   private static String chack2;
 
-  static Customer customer = new Customer();
-  static Place_Status place_status = new Place_Status();
-  static Table table = new Table();
-  static Reservation reservation = new Reservation();
+  static Customer customer;
+  static Place_Status place_status;
+  static Table table;
+  static Reservation reservation;
+  static Reservation reservation1;
 
   public static void main(String[] args) {
     chack = false;
-
+    customer = new Customer();
+    place_status = new Place_Status();
+    table = new Table();
+    reservation = new Reservation();
+    reservation1 = new Reservation(customer);
+    
     //เริ่มต้นแอพ
     RunApp();
   }
@@ -133,7 +139,7 @@ public class App {
     } else if (yourInput == 1) {
       displayReservationTable();
     } else if (yourInput == 2) {
-      displayMessageLine("ยังไม่มี");
+      reservation.Display_reservation();
     } else if (yourInput == 3) {
       displayMessageLine("ยังไม่มี");
     } else if (yourInput == 4) {
@@ -160,7 +166,7 @@ public class App {
     } else if (yourInput >= 1 || yourInput <= 20) {
       displayMessage("Enter Y to confirm : ");
       chack2 = input();
-      if (chack2 == "Y"){
+      if (chack2.equals("Y")){
         reservation.Save_table_reservation_information(yourInput,customer.Get_person_id());
       }else {
       displayMessageLine("try again.");

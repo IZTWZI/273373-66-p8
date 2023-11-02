@@ -3,6 +3,8 @@ public class Table {
     private String table_status;
 
     public Table(){
+        
+    
 
     }
 

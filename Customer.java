@@ -5,7 +5,9 @@ public class Customer extends Person {
   private ArrayList<String> customer_phones = new ArrayList<String>();
   private String customer_phone;
 
-  public Customer() {}
+  public Customer() {
+    
+  }
 
   public void Set_phone(String customer_phone) {
     this.customer_phones.add(customer_phone);
