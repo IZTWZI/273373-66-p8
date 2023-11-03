@@ -76,7 +76,7 @@ public class App {
   //หน้าของ Customer หน้า Register
   public static void displayCustomerR() {
     displayLineCustomer();
-    displayMessageLine("Register");
+    displayMessageLine("Register!");
     displayMessage("input username : ");
     username = input();
     displayMessage("input password : ");
@@ -102,10 +102,10 @@ public class App {
     }
   }
 
-  //หน้าของ Customer หน้า Register
+  //หน้าของ Customer หน้า Login
   public static void displayCustomerL() {
     displayLineCustomer();
-    displayMessageLine("Login");
+    displayMessageLine("Login!");
     displayMessage("input username : ");
     username = input();
     displayMessage("input password : ");
@@ -150,7 +150,7 @@ public class App {
     }
   }
 
-    //หน้าของ Customer หน้าหลักของ Customer
+    //หน้าของ Customer หน้าตรวจสอบสถาณะโต๊ะ Customer
   public static void displayReservationTable() {
     displayLineCustomer();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
@@ -175,6 +175,30 @@ public class App {
     } else {
       displayMessageLine("try again.");
       displayReservationTable();
+    }
+  }
+
+  //หน้าของ Customer หน้าดู Menu ของ Customer
+  public static void displayCustomerMenu() {
+    displayLineCustomer();
+    displayMessageLine("Place_Status : " + place_status.Get_place_status());
+    displayMessageLine("Hi : " + customer.Get_person_username());
+    displayMessageLine("Please select a number.");
+    displayMessageLine("(1) อาหาร");
+    displayMessageLine("(2) เครื่องดื่ม");
+    displayMessageLine("(0) back");
+    displayMessage("Your input : ");
+    yourInput = inputInt();
+
+    if (yourInput == 0) {
+      displayCustomer();
+    } else if (yourInput == 1) {
+      displayMessageLine("ยังไม่มี");
+    } else if (yourInput == 2) {
+      displayMessageLine("ยังไม่มี");
+    } else {
+      displayMessageLine("try again.");
+      displayCustomerMenu();
     }
   }
 

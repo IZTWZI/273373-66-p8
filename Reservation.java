@@ -20,7 +20,7 @@ public class Reservation {
   public Reservation(Customer customer) {
     this.customer = customer;
   }
-
+  //หน้าของ Customer บันทึกการจองโต๊ะของ Customer
   public void Save_table_reservation_information(
     int table_id,
     int customer_id
@@ -59,6 +59,7 @@ public class Reservation {
     return "";
   }
 
+  //เรียกใช้เพื่อนแสดงข้อมูลโต๊ะที่ว่างและไม่ว่าง
   public void Cancel_table_reservation(int reserve_id) {}
 
   public void Check_table_status() {
@@ -69,7 +70,7 @@ public class Reservation {
     }
   }
 
-  //หน้าของ ข้อมูลการจอง
+  //หน้าของ แสดงข้อมูลการจองของ Customer
   public void Display_reservation() {
     App.displayLineCustomer();
     App.displayMessageLine("Reserve ID : " + reserve_id);
