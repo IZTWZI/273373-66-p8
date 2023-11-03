@@ -1,3 +1,4 @@
+//ไฟล์ Menu.java มี code ดังนี้ :
 public class Menu {
     private int menu_id;
     private String menu_name;
@@ -5,11 +6,27 @@ public class Menu {
     private String menu_status;
     private String menu_type;
 
+    private int quantity; // เพิ่ม properties ในการเก็บจำนวนอาหารในรายการ
+
     
     public Menu() {
     }
 
-    
+    // เพิ่มเมธอดเพื่อกำหนดจำนวนอาหารในรายการ
+    public void Set_quantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    // เพิ่มเมธอดเพื่อรับข้อมูลจำนวนอาหารในรายการ
+    public int Get_quantity() {
+        return this.quantity;
+    }
+
+    // เพิ่มเมธอดเพื่อคำนวณราคารายการอาหาร
+    public double CalculateTotalPrice() {
+        return this.menu_price * this.quantity;
+    }
+
     public String Get_menu_name() {
         return menu_name;
     }

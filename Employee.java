@@ -1,3 +1,4 @@
+//ไฟล์ Employee.java มี code ดังนี้ :
 import java.util.ArrayList;
 
 public class Employee extends Person {

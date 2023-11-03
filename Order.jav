@@ -1,3 +1,4 @@
+//ไฟล์ Order.java มี code ดังนี้ :
 public class Order extends Transact{
     public Order() {
     }

@@ -1,3 +1,4 @@
+//ไฟล์ Promotion.java มี code ดังนี้ :
 public class Promotion {
     private int promotion_id;
     private String promotion_name;

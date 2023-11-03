@@ -1,3 +1,4 @@
+//ไฟล์ Transaction.java มี code ดังนี้ :
 import java.time.LocalDate;
 import java.time.LocalTime;
 

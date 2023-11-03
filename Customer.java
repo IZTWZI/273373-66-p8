@@ -1,3 +1,4 @@
+//ไฟล์ Customer.java มี code ดังนี้ :
 import java.util.ArrayList;
 
 public class Customer extends Person {

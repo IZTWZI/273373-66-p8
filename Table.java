@@ -1,3 +1,4 @@
+//ไฟล์ Table.java มี code ดังนี้ :
 public class Table {
     private int table_id;
     private String table_status;

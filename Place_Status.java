@@ -1,3 +1,4 @@
+//ไฟล์ Place_Status.java มี code ดังนี้ :
 public class Place_Status {
     private int place_id;
     private String place_status;

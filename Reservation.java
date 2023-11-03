@@ -1,3 +1,4 @@
+//ไฟล์ Reservation.java มี code ดังนี้ :
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.concurrent.ThreadLocalRandom;
