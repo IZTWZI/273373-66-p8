@@ -1,34 +1,69 @@
-//ไฟล์ App.java มี code ดังนี้ :
-import java.util.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class App {
+
+  //ใช้รับค่าแบบ ตัวอักษร
+  public static String input() {
+    Scanner scanner = new Scanner(System.in);
+
+    return scanner.next();
+  }
+
+  //ใช้รับค่าแบบ ตัวเลข
+  public static int inputInt() {
+    Scanner scanner = new Scanner(System.in);
+
+    return scanner.nextInt();
+  }
+
+  //print และ ไม่ขึ้นบรรทัดใหม่
+  public static void displayMessage(String message) {
+    System.out.print(message);
+  }
+
+  //print และ ขึ้นบรรทัดใหม่
+  public static void displayMessageLine(String message) {
+    System.out.println(message);
+  }
+
+  //print ข้อความกั้นหน้า
+  public static void displayLine() {
+    System.out.println("----------------------------------------");
+  }
+
+  //print ข้อความกั้นหน้าของ Customer
+  public static void displayLineCustomer() {
+    System.out.println("------------*Customer Page*------------");
+  }
+
+  //print ข้อความกั้นหน้าของ Employee
+  public static void displayLineEmployee() {
+    System.out.println("------------*Employee Page*------------");
+  }
 
   private static int yourInput;
   private static String username;
   private static String password;
   private static String confirmPassword;
-  private static String phone;
+  private static int phone;
   private static boolean chack;
   private static String chack2;
 
-  static Customer customer;
-  static Employee employee;
-  static Place_Status place_status;
-  static Table table;
-  static Reservation reservation;
-  static Reservation reservation1;
-  static Basket basket;
+  private static Customer customer;
+  private static Place_Status place_status;
+  private static Table table;
+  private static Reservation reservation;
+  private static Menu menu;
 
   public static void main(String[] args) {
-    chack = false;
-    customer = new Customer();
-    employee = new Employee();
-    place_status = new Place_Status();
-    table = new Table();
     reservation = new Reservation();
-    reservation1 = new Reservation(customer);
-    basket = new Basket();
-
+    place_status = new Place_Status();
+    customer = new Customer();
+    table = new Table(1, "null");
+    menu = new Menu(1,"ข้าวผัด", 45.00, "อาหาร", "On");
     //เริ่มต้นแอพ
     RunApp();
   }
@@ -49,7 +84,7 @@ public class App {
     } else if (yourInput == 1) {
       displayCustomerRL();
     } else if (yourInput == 2) {
-      displayEmployeeL();
+      //displayEmployeeL();
     } else {
       displayMessageLine("try again.");
       RunApp();
@@ -89,21 +124,20 @@ public class App {
     displayMessage("input confirm password : ");
     confirmPassword = input();
     displayMessage("input phone : ");
-    phone = input();
+    phone = inputInt();
 
     //ตรวจสอบว่ารหัสผ่านตรงกันหรือไม่
     if (!password.equals(confirmPassword)) {
       displayMessageLine("Passwords don't match");
       displayCustomerRL();
     } else {
-      chack = customer.register(username, password, phone);
+      chack = customer.checkRegister(1, username, password, phone);
     }
-
     //ถ้า register ผ่านจะไปที่หน้าหลักของ Customer
     if (chack) {
       displayCustomer();
     } else {
-      displayCustomerR();
+      displayCustomerRL();
     }
   }
 
@@ -116,8 +150,9 @@ public class App {
     displayMessage("input password : ");
     password = input();
 
+    chack = customer.checkLogin(username, password);
+
     //ถ้า login ผ่านจะไปที่หน้าหลักของ Customer
-    chack = customer.login(username, password, 1);
     if (chack) {
       displayCustomer();
     } else {
@@ -146,9 +181,9 @@ public class App {
     } else if (yourInput == 2) {
       reservation.Display_reservation();
     } else if (yourInput == 3) {
-      displayCustomerMenu(); //
+      //displayCustomerMenu(); //
     } else if (yourInput == 4) {
-      displayOrderedItems(); // เรียกเมธอดเพื่อแสดงรายการอาหารที่สั่ง
+      //displayOrderedItems(); // เรียกเมธอดเพื่อแสดงรายการอาหารที่สั่ง
     } else {
       displayMessageLine("try again.");
       displayCustomer();
@@ -161,7 +196,13 @@ public class App {
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
     displayMessageLine("Hi : " + customer.Get_person_username());
     displayMessageLine("Please select a number.");
-    reservation.Check_table_status();
+    //reservation.Check_table_status();
+    displayMessageLine(
+      "Table ID : " +
+      table.Get_table_id() +
+      " - Status : " +
+      table.Get_table_status()
+    );
     displayMessageLine("(0) Back");
     displayMessage("Your input : ");
     yourInput = inputInt();
@@ -172,10 +213,16 @@ public class App {
       displayMessage("Enter Y to confirm : ");
       chack2 = input();
       if (chack2.equals("Y")) {
+        int randomNumber = ThreadLocalRandom.current().nextInt(1000, 10000);
+        reservation = new Reservation();
         reservation.Save_table_reservation_information(
-          yourInput,
-          customer.Get_person_id()
+          randomNumber,
+          LocalDate.now(),
+          LocalTime.now(),
+          customer,
+          table
         );
+        reservation.Display_reservation();
       } else {
         displayMessageLine("try again.");
         displayReservationTable();
@@ -190,7 +237,9 @@ public class App {
   public static void displayCustomerMenu() {
     displayLineCustomer();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
-    displayMessageLine("Hi : " + customer.Get_person_username());
+    displayMessageLine(
+      "Hi : " + customer.Get_person_id()
+    );
     displayMessageLine("Please select a number.");
     displayMessageLine("(1) อาหาร");
     displayMessageLine("(2) เครื่องดื่ม");
@@ -201,181 +250,12 @@ public class App {
     if (yourInput == 0) {
       displayCustomer();
     } else if (yourInput == 1) {
-      displayFoodMenu(); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
+      //displayFoodMenu(); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
     } else if (yourInput == 2) {
       displayMessageLine("ยังไม่มี");
     } else {
       displayMessageLine("try again.");
       displayCustomerMenu();
     }
-  }
-
-  // เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
-  public static void displayFoodMenu() {
-    displayLineCustomer();
-    displayMessageLine("Food Menu");
-    // แสดงรายการอาหารจากฐานข้อมูลหรือรายการที่คุณกำหนด
-    // ตัวอย่าง:
-    Menu menu1 = new Menu();
-    menu1.Set_menu_name("Pad Thai");
-    menu1.Set_menu_price(100.0);
-    Menu menu2 = new Menu();
-    menu2.Set_menu_name("Tom Yum Soup");
-    menu2.Set_menu_price(80.0);
-
-    displayMessageLine(
-      "1. " + menu1.Get_menu_name() + " - " + menu1.Get_menu_price() + " Baht"
-    );
-    displayMessageLine(
-      "2. " + menu2.Get_menu_name() + " - " + menu2.Get_menu_price() + " Baht"
-    );
-    displayMessageLine("(0) Back");
-    displayMessage("Your input : ");
-    yourInput = inputInt();
-
-    if (yourInput == 0) {
-      displayCustomer();
-    } else if (yourInput == 1) {
-      displayOrderFood(menu1); // เรียกเมธอดเพื่อสั่งอาหาร
-    } else if (yourInput == 2) {
-      displayOrderFood(menu2); // เรียกเมธอดเพื่อสั่งอาหาร
-    } else {
-      displayMessageLine("try again.");
-      displayFoodMenu();
-    }
-  }
-
-  // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
-  public static void displayOrderFood(Menu menu) {
-    displayLineCustomer();
-    displayMessage("Enter quantity for " + menu.Get_menu_name() + " : ");
-    int quantity = inputInt();
-    basket.AddToBasket(menu, quantity); // เพิ่มรายการอาหารใน Basket
-    displayMessageLine("Added to your basket.");
-    displayMessageLine(
-      "Total Price: " + basket.CalculateTotalPrice() + " Baht"
-    );
-    displayMessageLine("(0) Back");
-    displayMessage("Your input : ");
-    yourInput = inputInt();
-
-    if (yourInput == 0) {
-      displayCustomer();
-    } else {
-      displayMessageLine("try again.");
-      displayOrderFood(menu);
-    }
-  }
-
-  // เพิ่มเมธอดเพื่อแสดงรายการอาหารใน Basket
-  public static void displayOrderedItems() {
-    displayLineCustomer();
-    displayMessageLine("Your Ordered Items");
-    basket.DisplayOrderedItems();
-    displayMessageLine(
-      "Total Price: " + basket.CalculateTotalPrice() + " Baht"
-    );
-    displayMessageLine("(0) Back");
-    displayMessage("Your input : ");
-    yourInput = inputInt();
-
-    if (yourInput == 0) {
-      displayCustomer();
-    } else {
-      displayMessageLine("try again.");
-      displayOrderedItems();
-    }
-  }
-
-    //หน้าของ Employee หน้า Login
-  public static void displayEmployeeL() {
-    displayLineEmployee();
-    displayMessageLine("Login!");
-    displayMessage("input username : ");
-    username = input();
-    displayMessage("input password : ");
-    password = input();
-
-    //ถ้า login ผ่านจะไปที่หน้าหลักของ Employee
-    chack = employee.login(username, password, 0);
-    if (chack) {
-      displayEmployee();
-    } else {
-      RunApp();
-    }
-  }
-
-
-  //หน้าของ Customer หน้าหลักของ Customer
-  public static void displayEmployee() {
-    displayLineCustomer();
-    displayMessageLine("Place_Status : " + place_status.Get_place_status());
-    displayMessageLine("Hi : " + employee.Get_person_username());
-    displayMessageLine("Please select a number.");
-    displayMessageLine("(1) แก้ไขสถานะร้าน ");
-    displayMessageLine("(2) แก้ไข Menu");
-    displayMessageLine("(3) แก้ไขโปรโมชัน");
-    displayMessageLine("(4) ดูข้อมูลโต๊ะ");
-    displayMessageLine("(5) ดูข้อมูลออร์เดอร์");
-    displayMessageLine("(6) แก้ไขสถานณะ Menu");
-    displayMessageLine("(7) ปริ้นใบเสร็จ");
-    displayMessageLine("(0) LogOut");
-    displayMessage("Your input : ");
-    yourInput = inputInt();
-
-    if (yourInput == 0) {
-      displayCustomerRL();
-    } else if (yourInput == 1) {
-      displayMessageLine("ยังไม่มี");
-    } else if (yourInput == 2) {
-      displayMessageLine("ยังไม่มี");
-    } else if (yourInput == 3) {
-      displayMessageLine("ยังไม่มี");
-    } else if (yourInput == 4) {
-      displayMessageLine("ยังไม่มี");
-    } else {
-      displayMessageLine("try again.");
-      displayEmployee();
-    }
-  }
-
-
-  //ใช้รับค่าแบบ ตัวอักษร
-  public static String input() {
-    Scanner scanner = new Scanner(System.in);
-
-    return scanner.next();
-  }
-
-  //ใช้รับค่าแบบ ตัวเลข
-  public static int inputInt() {
-    Scanner scanner = new Scanner(System.in);
-
-    return scanner.nextInt();
-  }
-
-  //print และ ไม่ขึ้นบรรทัดใหม่
-  public static void displayMessage(String message) {
-    System.out.print(message);
-  }
-
-  //print และ ขึ้นบรรทัดใหม่
-  public static void displayMessageLine(String message) {
-    System.out.println(message);
-  }
-
-  //print ข้อความกั้นหน้า
-  public static void displayLine() {
-    System.out.println("----------------------------------------");
-  }
-
-  //print ข้อความกั้นหน้าของ Customer
-  public static void displayLineCustomer() {
-    System.out.println("------------*Customer Page*------------");
-  }
-
-    //print ข้อความกั้นหน้าของ Employee
-  public static void displayLineEmployee() {
-    System.out.println("------------*Employee Page*------------");
   }
 }

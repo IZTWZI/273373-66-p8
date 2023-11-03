@@ -1,17 +1,13 @@
-//ไฟล์ Employee.java มี code ดังนี้ :
-import java.util.ArrayList;
+public class Employee extends Person{
+    private double employee_salary;
+    
+    public Employee() {
+    }
 
-public class Employee extends Person {
+    public void Set_employee_salary(double employee_salary) {
+    }
 
-  private ArrayList<Double> employee_salary = new ArrayList<Double>();
-
-  public Employee() {
-
-  }
-
-  public void Set_employee_salary(double employee_salary) {}
-
-  public ArrayList<Double> Get_employee_salary() {
-    return this.employee_salary;
-  }
+    public double Get_employee_salary() {
+        return 0.0;
+    }
 }

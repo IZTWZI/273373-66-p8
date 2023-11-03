@@ -1,4 +1,3 @@
-//ไฟล์ Receipt.java มี code ดังนี้ :
 public class Receipt extends Transaction{
     private double receipt_vat;
     private double receipt_change;
