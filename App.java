@@ -310,12 +310,15 @@ public class App {
   public static void displayEmployee() {
     displayLineCustomer();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
-    displayMessageLine("Hi : " + customer.Get_person_username());
+    displayMessageLine("Hi : " + employee.Get_person_username());
     displayMessageLine("Please select a number.");
-    displayMessageLine("(1) จองโต๊ะ");
-    displayMessageLine("(2) ข้อมูลการจอง");
-    displayMessageLine("(3) สั่งอาหาร");
-    displayMessageLine("(4) รายการอาหารที่สั่ง");
+    displayMessageLine("(1) แก้ไขสถานะร้าน ");
+    displayMessageLine("(2) แก้ไข Menu");
+    displayMessageLine("(3) แก้ไขโปรโมชัน");
+    displayMessageLine("(4) ดูข้อมูลโต๊ะ");
+    displayMessageLine("(5) ดูข้อมูลออร์เดอร์");
+    displayMessageLine("(6) แก้ไขสถานณะ Menu");
+    displayMessageLine("(7) ปริ้นใบเสร็จ");
     displayMessageLine("(0) LogOut");
     displayMessage("Your input : ");
     yourInput = inputInt();
@@ -323,16 +326,16 @@ public class App {
     if (yourInput == 0) {
       displayCustomerRL();
     } else if (yourInput == 1) {
-      displayReservationTable();
+      displayMessageLine("ยังไม่มี");
     } else if (yourInput == 2) {
-      reservation.Display_reservation();
+      displayMessageLine("ยังไม่มี");
     } else if (yourInput == 3) {
-      displayCustomerMenu(); //
+      displayMessageLine("ยังไม่มี");
     } else if (yourInput == 4) {
-      displayOrderedItems(); // เรียกเมธอดเพื่อแสดงรายการอาหารที่สั่ง
+      displayMessageLine("ยังไม่มี");
     } else {
       displayMessageLine("try again.");
-      displayCustomer();
+      displayEmployee();
     }
   }
 
