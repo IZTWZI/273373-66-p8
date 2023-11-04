@@ -399,7 +399,7 @@ public class App {
     }else if (yourInput == 5) {
       displayLineEmployee();
       displayMessageLine("Ordered Menu");
-      order.Display_order_all();
+      basket.Display_Basket_alle();
     }else if (yourInput == 6) {
       displayEmployeeMenuOnOff();
     }else if (yourInput == 7) {
@@ -547,7 +547,7 @@ public class App {
     displayMessage("Input Menu ID : ");
     yourInput = inputInt();
     if (yourInput == 0) {
-      displayCustomer();
+      displayEmployee();
     } else if (yourInput == 1) {
       displayEmployeeEditFoodOnoff(menu); // เรียกเมธอดเพื่อสั่งอาหาร
     } else {
