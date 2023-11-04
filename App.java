@@ -588,7 +588,7 @@ public class App {
     displayMessageLine("View Table");
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
     displayMessageLine("Hi : " + employee.Get_person_username());
-    displayMessageLine("Order ID : " + order.Get_Transaction_id());
+    displayMessageLine("Order ID : " + basket.Get_Transaction_id());
     displayMessageLine("Reserve ID : " + reservation.Get_reserve_id());
     displayMessageLine("Table ID : " + reservation.Get_reserve_table().Get_table_id());
     displayMessageLine("Time : " + reservation.Get_reserve_date());
@@ -616,6 +616,9 @@ public class App {
       receipt.Get_transaction_menu_total_amount();
       displayEmployee();
 
+    }else{
+      displayMessageLine("try again.");
+      displayEmployeeReceipt();
     }
 
 
