@@ -13,7 +13,7 @@ public class Customer extends Person{
     public void Set_phone(int customer_phone){
         this.customer_phone = customer_phone;
     }
-    public  int Get_phone(){
+    public int Get_phone(){
         return this.customer_phone ;
     }
     public boolean checkRegister(int id,String username, String password,int phone){

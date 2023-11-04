@@ -5,6 +5,7 @@ public class Place_Status {
     public Place_Status(){
         this.place_status = "Open";
     }
+
     public void Set_places_status(String place_status){
         this.place_status = place_status;
     }    

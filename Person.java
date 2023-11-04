@@ -32,11 +32,13 @@ public class Person {
         return this.person_id;
     }
 
-    public boolean checkLogin(String username, String password){
-        if(this.person_username.equals(username)&&this.person_password.equals(password)){
+    public boolean checkLogin(String username, String password, int x){
+        if(this.person_username.equals(username)&&this.person_password.equals(password) && x == 1){
+            return true;
+        }else if(this.person_username.equals(username)&&this.person_password.equals(password) && x == 0){
             return true;
         }else{
-            App.displayMessage("Username/Password is incorrect.");
+            App.displayMessageLine("Username/Password is incorrect.");
             return false;
         }
 
