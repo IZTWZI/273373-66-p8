@@ -35,6 +35,8 @@ public class Basket extends Transaction{
         Set_transaction_menu_type(menu.Get_menu_type());
         Set_transaction_total_price(menu.Get_menu_price()*quantity);
 
+        
+
     }
 
     // เพิ่มเมธอดเพื่อคำนวณราคารายการอาหารทั้งหมดใน Basket

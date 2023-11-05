@@ -108,7 +108,7 @@ public class Reservation {
   public void Get_table_reservation_information() {
     App.displayLineEmployee();
     if(Get_reserve_id() == -1){
-        App.displayMessageLine("ไม่มีโต๊ะที่ถูกจองในขณะนี้");
+        App.displayMessageLine("There are no tables currently reserved.");
     }else{
         App.displayMessageLine("Reserve ID : " + Get_reserve_id());
         App.displayMessageLine("Table ID : " + Get_reserve_table().Get_table_id());
