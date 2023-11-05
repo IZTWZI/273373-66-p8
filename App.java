@@ -112,6 +112,7 @@ public class App {
     //ถ้าเหลือ (0) Exit หลุดการทำงานของ app ทันที
     if (yourInput == 0) {
       displayMessageLine("Thank You.");
+      System.exit(0);
     } else if (yourInput == 1) {
       displayCustomerRL();
     } else if (yourInput == 2) {
