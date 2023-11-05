@@ -9,6 +9,7 @@ public class Order extends Transaction{
     public void Delete_order(int order_id) {
     }
 
+    //หน้าสำหรับ Customer
     public void Display_order_all() {
         App.displayMessageLine("Date : " + Get_transaction_date());
         App.displayMessageLine("Time : " + Get_transaction_time());

@@ -16,6 +16,8 @@ public class Customer extends Person{
     public int Get_phone(){
         return this.customer_phone ;
     }
+
+    //เช็ค register
     public boolean checkRegister(int id,String username, String password,int phone){
         if(Get_person_username()  != username){
             Set_person_id(id);

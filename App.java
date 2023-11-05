@@ -60,15 +60,11 @@ public class App {
   private static Table tables[];
   private static Reservation reservation;
   private static Menu menu;
-  private static Menu menu2;
-  private static Menu menu1[];
   private static Menu menus[];
   private static Basket basket;
   private static Order order;
   private static Receipt receipt;
   private static Promotion promotion;
-
-  private static ArrayList<Transaction> Transactions;
 
   public static void main(String[] args) {
     reservation = new Reservation();
@@ -79,11 +75,6 @@ public class App {
     order = new Order();
     receipt = new Receipt();
     promotion = new Promotion(1, "Delicious water.", 45.00);
-    menu = new Menu(1, "Fried rice", 45.00, "Food", "On", promotion);
-    menu2 = new Menu(2, "Coke", 20.00, "Drink", "On", promotion);
-    
-    //menu1[0] = new Menu(2, "Coke", 20.00, "Drink", "On", promotion);
-    Transactions = new ArrayList<>();
 
     table = new Table(30, "null");
 
@@ -131,6 +122,7 @@ public class App {
     }
   }
 
+
   //หน้าของ Customer เลือก register หรือ login
   public static void displayCustomerRL() {
     displayLineCustomer();
@@ -152,6 +144,7 @@ public class App {
       displayCustomerRL();
     }
   }
+
 
   //หน้าของ Customer หน้า Register
   public static void displayCustomerR() {
@@ -181,6 +174,7 @@ public class App {
     }
   }
 
+
   //หน้าของ Customer หน้า Login
   public static void displayCustomerL() {
     displayLineCustomer();
@@ -199,6 +193,7 @@ public class App {
       displayCustomerRL();
     }
   }
+
 
   //หน้าของ Customer หน้าหลักของ Customer
   public static void displayCustomer() {
@@ -224,56 +219,22 @@ public class App {
       displayCustomerMenu(); //
     } else if (yourInput == 4) {
       basket.Display_Basket_all(); // เรียกเมธอดเพื่อแสดงรายการอาหารที่สั่ง
-      //displayBasketContents();
     } else {
       displayMessageLine("try again.");
       displayCustomer();
     }
   }
 
-  //   public static void displayBasketContents() {
-  //     App.displayLineCustomer();
-  //     App.displayMessageLine("Basket Contents:");
 
-  //     for (Transaction transaction : Transactions) {
-  //         if (transaction.getReservation().Get_reserve_id() == targetReservationID) {
-  //             for (Menu menu : basket.getOrderedItems()) {
-  //                 App.displayMessageLine("Menu Name: " + menu.Get_menu_name());
-  //                 //App.displayMessageLine("Quantity: " + menu.Get_transaction_menu_amount());
-  //                 App.displayMessageLine("Price: " + menu.Get_menu_price() + " Baht");
-  //                 //App.displayMessageLine("Note: " + menu.Get_transaction_note());
-  //                 App.displayLineCustomer();
-  //             }
-  //         }
-  //     }
-
-  //     App.displayMessageLine("(0) Back");
-  //     App.displayMessage("Your input: ");
-  //     int yourInput = App.inputInt();
-
-  //     if (yourInput == 0) {
-  //         App.displayCustomer();
-  //     } else {
-  //         App.displayMessageLine("try again.");
-  //         displayBasketContents();
-  //     }
-  // }
-
-  //หน้าของ Customer หน้าตรวจสอบสถาณะโต๊ะ Customer
+  //หน้าของ Customer หน้าตรวจสอบสถาณะโต๊ะ+จองโต๊ะ Customer
   public static void displayReservationTable() {
     displayLineCustomer();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
     displayMessageLine("Hi : " + customer.Get_person_username());
     displayMessageLine("Please select a number.");
-    //reservation.Check_table_status();
-    //displayMessageLine("Table ID : " +table.Get_table_id() +" - Status : " +table.Get_table_status());
     for (int i = 0; i < tables.length; i++) {
       if (tables[i].Get_table_status().equals("null")) {
-        displayMessageLine(
-          "Table ID : " +
-          (tables[i].Get_table_id()) +
-          " - Status : " +
-          tables[i].Get_table_status()
+        displayMessageLine( "Table ID : " + (tables[i].Get_table_id()) + " - Status : " + tables[i].Get_table_status()
         );
       }
     }
@@ -323,6 +284,7 @@ public class App {
     }
   }
 
+
   //หน้าของ Customer หน้าดู Menu ของ Customer
   public static void displayCustomerMenu() {
     if (
@@ -345,9 +307,9 @@ public class App {
       if (yourInput == 0) {
         displayCustomer();
       } else if (yourInput == 1) {
-        displayFoodMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร (1) คืออาหาร
+        displayFoodMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนู (1) คืออาหาร
       } else if (yourInput == 2) {
-        displayFoodMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร (2) คือเครื่องดื่ม
+        displayFoodMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนู (2) คือเครื่องดื่ม
       } else {
         displayMessageLine("try again.");
         displayCustomerMenu();
@@ -355,7 +317,8 @@ public class App {
     }
   }
 
-  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+
+  //หน้าของ Customer สำหรับดู Menu + เลือก Menu เพื่อบันทึกลง Basket
   public static void displayFoodMenu(int x) {
     displayLineCustomer();
     displayMessageLine("Menu Page");
@@ -377,21 +340,21 @@ public class App {
     if (yourInput == 0) {
       displayCustomerMenu();
     } else if (menus[yourInput-1] != null && yourInput >= 1 && yourInput <= menus.length) {
-      displayOrderFood(menus[yourInput-1]); // เรียกเมธอดเพื่อสั่งอาหาร
+      displayOrderFood(menus[yourInput-1]); // เรียกเมธอดเพื่อใส่จำนวน Menu
     } else {
       displayMessageLine("try again.");
       displayFoodMenu(x);
     }
   }
 
-  // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
+
+  // หน้าของ Customer สำหรับใส่จำนวน Menu + บันทึก Menu ลงใน Basket
   public static void displayOrderFood(Menu menu) {
     displayMessage("Enter quantity for " + menu.Get_menu_name() + " : ");
     int quantity = inputInt();
     displayMessage("Enter your note : ");
     String note = input();
-    basket.AddToBasket(menu, quantity, reservation, note); // เพิ่มรายการอาหารใน Basket
-    //Transactions.add(basket); //001
+    basket.AddToBasket(menu, quantity, reservation, note); // เพิ่ม menu ใน Basket
     displayMessageLine("Added to your basket.");
     displayMessageLine(
       "Total Price: " + basket.CalculateTotalPrice() + " Baht"
@@ -408,25 +371,6 @@ public class App {
     }
   }
 
-  // // เพิ่มเมธอดเพื่อแสดงรายการอาหารใน Basket
-  // public static void displayOrderedItems() {
-  //   displayLineCustomer();
-  //   displayMessageLine("Your Ordered Items");
-  //   //basket.DisplayOrderedItems();
-  //   displayMessageLine(
-  //     "Total Price: " + basket.CalculateTotalPrice() + " Baht"
-  //   );
-  //   displayMessageLine("(0) Back");
-  //   displayMessage("Your input : ");
-  //   yourInput = inputInt();
-
-  //   if (yourInput == 0) {
-  //     displayCustomer();
-  //   } else {
-  //     displayMessageLine("try again.");
-  //     displayOrderedItems();
-  //   }
-  // }
 
   //หน้าของ Employee หน้า Login
   public static void displayEmployeeL() {
@@ -446,6 +390,7 @@ public class App {
       RunApp();
     }
   }
+
 
   //หน้าของ Employee หน้าหลักของ Employee
   public static void displayEmployee() {
@@ -488,6 +433,7 @@ public class App {
     }
   }
 
+
   //หน้าของ Employee หน้าแก้ไขสถานะร้านของ Employee
   public static void editPlaceStatus() {
     displayLineEmployee();
@@ -515,7 +461,8 @@ public class App {
     }
   }
 
-  //หน้าของ Employee หน้าดูข้อมูลการจองโต๊ะของ Employee
+
+  //หน้าของ Employee หน้าดูข้อมูลการจองโต๊ะ
   public static void viewReservationTable() {
     displayLineEmployee();
     displayMessageLine("View Table");
@@ -524,7 +471,8 @@ public class App {
     reservation.Get_table_reservation_information();
   }
 
-  //หน้าของ Employee หน้าดู Menu ของ Employee
+
+  //หน้าของ Employee หน้าแก้ไข Menu ของ Employee (เลือกว่าจะแก้ไข อาหาร หรือ เครื่องดื่ม)
   public static void displayEmployeeMenu() {
     displayLineEmployee();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
@@ -539,16 +487,17 @@ public class App {
     if (yourInput == 0) {
       displayEmployee();
     } else if (yourInput == 1) {
-      displayEmployeeMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
+      displayEmployeeMenu(yourInput); // เรียกเมธอดเพื่อแสดง Menu (1) อาหาร
     } else if (yourInput == 2) {
-      displayEmployeeMenu(yourInput);
+      displayEmployeeMenu(yourInput); // เรียกเมธอดเพื่อแสดง Menu (2) เครื่องดื่ม
     } else {
       displayMessageLine("try again.");
       displayEmployeeMenu();
     }
   }
 
-    //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+
+  //หน้าของ Employee หน้าแก้ไข Menu ของ Employee (เลือกว่าจะแก้ไข ราคา, เพิ่ม Menu, ลบ Menu)
   public static void displayEmployeeMenu(int x) {
     displayLineEmployee();
     displayMessageLine("Please select a number.");
@@ -562,18 +511,19 @@ public class App {
     if (yourInput == 0) {
       displayEmployeeMenu();
     } else if (yourInput == 1) {
-      displayEmployeeEditFoodPrice(x); // เรียกเมธอดเพื่อสั่งอาหาร
+      displayEmployeeEditFoodPrice(x); // เรียกเมธอดเพื่อ แก้ไข ราคา
     } else if (yourInput == 2) {
-      displayEmployeeAddMenu(x);
+      displayEmployeeAddMenu(x); // เรียกเมธอดเพื่อ เพิ่ม Menu
     } else if (yourInput == 3) {
-      displayEmployeeDeleteMenu(x);
+      displayEmployeeDeleteMenu(x); // เรียกเมธอดเพื่อ ลบ Menu
     } else {
       displayMessageLine("try again.");
       displayEmployeeMenu(x);
     }
   }
 
-  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+
+  //หน้าของ Employee หน้าแก้ไข Menu ของ Employee (เลือกว่าจะแก้ไข ราคา ของ Menu ID ไหน)
   public static void displayEmployeeEditFoodPrice(int x) {
     displayLineEmployee();
     displayMessageLine("Edit Menu Price");
@@ -595,7 +545,7 @@ public class App {
     if (yourInput == 0) {
       displayEmployeeMenu(x);
     } else if (menus[yourInput-1] != null && yourInput >= 1 && yourInput <= menus.length) {
-      displayEmployeeEditFoodPrice2(menus[yourInput-1],x); // เรียกเมธอดเพื่อสั่งอาหาร
+      displayEmployeeEditFoodPrice2(menus[yourInput-1],x); // เรียกเมธอดเพื่อ แก้ไข ราคา จาก Menu ID
     }else {
       displayMessageLine("try again.");
       displayEmployeeEditFoodPrice(x);
@@ -603,7 +553,7 @@ public class App {
   }
 
   
-  // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
+  //หน้าของ Employee หน้าแก้ไข Menu ของ Employee (แก้ไข ราคา ของ Menu ตาม ID ที่ใส่เข้ามา)
   public static void displayEmployeeEditFoodPrice2(Menu menu,int x) {
     displayMessageLine("Menu ID : " + menu.Get_menu_id());
     displayMessageLine("Menu Name : " + menu.Get_menu_name());
@@ -614,6 +564,7 @@ public class App {
   }
 
 
+  //หน้าของ Employee หน้าแก้ไข Menu ของ Employee (เพิ่ม Menu)
   public static void displayEmployeeAddMenu(int x) {
     displayLineEmployee();
     displayMessageLine("Add Menu Page");
@@ -653,12 +604,12 @@ public class App {
             }
         }
     }
-    displayMessageLine("FULL MANU");
+    displayMessageLine("FULL MENU");
     displayEmployeeMenu(x);
   }
 
 
-  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+  //หน้าของ Employee หน้าแก้ไข Menu ของ Employee (ลบ Menu จาก ID ที่ใส่เข้าไป)
   public static void displayEmployeeDeleteMenu(int x) {
     displayLineEmployee();
     displayMessageLine("Delete Menu Page");
@@ -689,10 +640,8 @@ public class App {
     }
   }
 
-  
 
-
-  //หน้าของ Employee หน้าดู Menu ของ Employee
+  //หน้าของ Employee หน้าก่อนแก้ไขสถานะ (ON/OFF) ของ Menu
   public static void displayEmployeeMenuOnOff() {
     displayLineEmployee();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
@@ -705,7 +654,7 @@ public class App {
     yourInput = inputInt();
 
     if (yourInput == 0) {
-      displayCustomer();
+      displayEmployee();
     } else if (yourInput == 1) {
       displayEmployeeFoodMenuOnOff(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
     } else if (yourInput == 2) {
@@ -716,10 +665,11 @@ public class App {
     }
   }
 
-  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+
+  //หน้าของ Employee หน้าดูสถานะ (ON/OFF) ของ Menu
   public static void displayEmployeeFoodMenuOnOff(int x) {
     displayLineEmployee();
-    displayMessageLine("Edit Food Status");
+    displayMessageLine("Edit Menu Status");
     displayMessageLine("Please select a number.");
     for (int i = 0; i < menus.length; i++) {
         if (x == 1) {
@@ -737,14 +687,15 @@ public class App {
     if (yourInput == 0) {
       displayEmployeeMenuOnOff();
     } else if (menus[yourInput-1] != null && yourInput >= 1 && yourInput <= menus.length) {
-      displayEmployeeEditFoodOnoff(menus[yourInput-1],x); // เรียกเมธอดเพื่อสั่งอาหาร
+      displayEmployeeEditFoodOnoff(menus[yourInput-1],x); // เรียกเมธอดเพื่อ แก้ไขสถานะของ Menu
     } else {
       displayMessageLine("try again.");
       displayEmployeeFoodMenuOnOff(x);
     }
   }
 
-  // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
+
+  //หน้าของ Employee หน้าแก้ไขสถานะ (ON/OFF) ของ Menu ตาม ID ของ Menu ที่ใส่เข้ามา
   public static void displayEmployeeEditFoodOnoff(Menu menus,int x) {
     displayMessageLine("Please select a number.");
     displayMessageLine("(1) ON");
@@ -768,6 +719,7 @@ public class App {
       displayEmployeeEditFoodOnoff(menus,x);
     }
   }
+
 
   //หน้าของ Employee หน้าปริ้นใบเสร็จ Employee
   public static void displayEmployeeReceipt() {
@@ -832,7 +784,8 @@ public class App {
     }
   }
 
-  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+
+  //หน้าของ Employee หน้าก่อนแก้ไข Promotion
   public static void displayEmployeeEditPromotion() {
     displayLineEmployee();
     displayMessageLine("Promotion Edit Page");
@@ -850,7 +803,7 @@ public class App {
     yourInput = inputInt();
 
     if (yourInput == 0) {
-      displayCustomer();
+      displayEmployee();
     } else if (yourInput == 1) {
       displayEmployeeEditPromotion(menu); // เรียกเมธอดเพื่อสั่งอาหาร
     } else {
@@ -859,7 +812,8 @@ public class App {
     }
   }
 
-  // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
+
+  //หน้าของ Employee หน้าแก้ไข Promotion
   public static void displayEmployeeEditPromotion(Menu menu) {
     displayMessageLine("Menu ID : " + menu.Get_menu_id());
     displayMessage("edit Details : ");

@@ -32,6 +32,7 @@ public class Person {
         return this.person_id;
     }
 
+    //ตรวจสอบ login
     public boolean checkLogin(String username, String password, int x){
         if(this.person_username.equals(username)&&this.person_password.equals(password) && x == 1){
             return true;

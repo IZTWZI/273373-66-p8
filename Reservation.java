@@ -35,8 +35,7 @@ public class Reservation {
   }
 
   public Customer Get_reserve_customer() {
-    //return this.customer.Get_phone();
-        return this.customer;
+    return this.customer;
   }
 
   public LocalDate Get_reserve_date() {
@@ -55,13 +54,8 @@ public class Reservation {
     this.customer = customer;
   }
 
-  public void Save_table_reservation_information(
-    int reserve_id,
-    LocalDate reservationDate,
-    LocalTime reservationTime,
-    Customer customer,
-    Table table
-  ) {
+  //บันทึกข้อมูลการจองโต๊ะ
+  public void Save_table_reservation_information(int reserve_id,LocalDate reservationDate,LocalTime reservationTime,Customer customer,Table table) {
     Set_reserve_id(reserve_id);
     Set_reserve_time(reservationTime);
     Set_reserve_date(reservationDate);
@@ -70,6 +64,7 @@ public class Reservation {
     table.Set_table_status("Full");
   }
 
+  //ลบข้อมูลการจองโต๊ะ
   public void Cancel_table_reservation(int reserve_id) {
     if(this.reserve_id == reserve_id){
     Set_reserve_id(-1);
@@ -95,8 +90,8 @@ public class Reservation {
     App.displayMessageLine(
       "Customer Name : " +  Get_reserve_customer().Get_person_username()
     );
-    App.displayMessageLine("Time : " + Get_reserve_date());
-    App.displayMessageLine("Date : " + Get_reserve_time());
+    App.displayMessageLine("Time : " + Get_reserve_time());
+    App.displayMessageLine("Date : " + Get_reserve_date());
     App.displayMessageLine("(0) Back");
     App.displayMessage("Your input : ");
 

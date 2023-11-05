@@ -4,7 +4,6 @@ public class Menu {
     private double menu_price;
     private String menu_status;
     private String menu_type;
-    //private int quantity;
     private Promotion promotion;
     
     public Menu() {
@@ -19,17 +18,6 @@ public class Menu {
         this.menu_status = menu_status;
         this.promotion = promotion;
     }
-
-    // // เพิ่มเมธอดเพื่อกำหนดจำนวนอาหารในรายการ
-    // public void Set_quantity(int quantity) {
-    //     this.quantity = quantity;
-    // }
-
-    // // เพิ่มเมธอดเพื่อรับข้อมูลจำนวนอาหารในรายการ
-    // public int Get_quantity() {
-    //     return this.quantity;
-    // }
-    
 
     public int Get_promotion_id(){
         return this.promotion.Get_promotion_id();
@@ -112,7 +100,7 @@ public class Menu {
         return Get_promotion_menu();
     }
 
-    
+    //ลืมใช้
     public void Display_menu_all() {
         App.displayLineCustomer();
         App.displayMessageLine("Menu ID: " + menu_id);

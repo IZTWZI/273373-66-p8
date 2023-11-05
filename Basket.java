@@ -17,7 +17,7 @@ public class Basket extends Transaction{
         super(menu, reservation, note);
     }
     
-
+    //บันทึกข้อมูลลงใน basket
     public void AddToBasket(Menu menu, int quantity,Reservation reservation, String note) {
         int randomNumber = ThreadLocalRandom.current().nextInt(1000, 10000);
         Set_transaction_id(randomNumber);
@@ -33,7 +33,7 @@ public class Basket extends Transaction{
 
     }
 
-    // เพิ่มเมธอดเพื่อคำนวณราคารายการอาหารทั้งหมดใน Basket
+    // คำนวณราคารายการอาหารทั้งหมดใน Basket
     public double CalculateTotalPrice() {
         return Get_transaction_total_price();
     }
@@ -44,7 +44,7 @@ public class Basket extends Transaction{
 
     public void Delete_Basket(int order_id) {
     }
-
+    //ของ Customer
     public void Display_Basket_all() {
         if (Get_Transaction_id() < 1) {
             App.displayMessageLine("Please order Menu.");
@@ -72,7 +72,7 @@ public class Basket extends Transaction{
           }
 
     }
-
+    //ของ Employee
     public void Display_Basket_alle() {
         App.displayMessageLine("Date : " + Get_transaction_date());
         App.displayMessageLine("Time : " + Get_transaction_time());
