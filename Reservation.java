@@ -71,18 +71,25 @@ public class Reservation {
   }
 
   public void Cancel_table_reservation(int reserve_id) {
-
+    if(this.reserve_id == reserve_id){
     Set_reserve_id(-1);
     Set_reserve_time(null);
     Set_reserve_date(null);
     Set_reserve_table(null);
     Set_reserve_customer(null);
-    App.displayEmployee();
+    Get_table_reservation_information();
+    }else{
+      App.displayMessageLine("Reserve ID is incorrect.");
+      Get_table_reservation_information();
+    }
+
+    
   }
 
   //หน้าของ Customer แสดงข้อมูลจองโต๊ะ
   public void Display_reservation() {
-    App.displayLineCustomer();
+    if(Get_reserve_id() > 0){
+      App.displayLineCustomer();
     App.displayMessageLine("Reserve ID : " + Get_reserve_id());
     App.displayMessageLine("Table ID : " + Get_reserve_table().Get_table_id());
     App.displayMessageLine(
@@ -101,13 +108,18 @@ public class Reservation {
         App.displayMessageLine("try again.");
         Display_reservation();
     }
+    }else{
+      App.displayMessageLine("There are no tables currently reserved.");
+      App.displayCustomer();
+    }
+    
     
   }
 
   //หน้าของ Employee แสดงข้อมูลจองโต๊ะ
   public void Get_table_reservation_information() {
     App.displayLineEmployee();
-    if(Get_reserve_id() == -1){
+    if(Get_reserve_id() < 1){
         App.displayMessageLine("There are no tables currently reserved.");
     }else{
         App.displayMessageLine("Reserve ID : " + Get_reserve_id());

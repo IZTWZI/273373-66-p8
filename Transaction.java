@@ -36,6 +36,7 @@ public class Transaction {
 
 
     public void Transact() {
+        
     }
 
     public void Set_transaction_menu_type(String transaction_menu_type) {

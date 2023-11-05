@@ -57,9 +57,12 @@ public class App {
   private static Employee employee;
   private static Place_Status place_status;
   private static Table table;
+  private static Table tables[];
   private static Reservation reservation;
   private static Menu menu;
   private static Menu menu2;
+  private static Menu menu1[];
+  private static Menu menus[];
   private static Basket basket;
   private static Order order;
   private static Receipt receipt;
@@ -70,18 +73,37 @@ public class App {
   public static void main(String[] args) {
     reservation = new Reservation();
     place_status = new Place_Status();
-    customer = new Customer();
+    customer = new Customer(0, "0", "0", 0111111111);
     employee = new Employee(404, "em1", "em1");
-    basket = new Basket();
+    basket = new Basket(reservation);
     order = new Order();
     receipt = new Receipt();
-    table = new Table(1, "null");
     promotion = new Promotion(1, "Delicious water.", 45.00);
-
     menu = new Menu(1, "Fried rice", 45.00, "Food", "On", promotion);
     menu2 = new Menu(2, "Coke", 20.00, "Drink", "On", promotion);
     
+    //menu1[0] = new Menu(2, "Coke", 20.00, "Drink", "On", promotion);
     Transactions = new ArrayList<>();
+
+    table = new Table(30, "null");
+
+    tables = new Table[20];
+    for (int i = 0; i < tables.length; i++) {
+      tables[i] = new Table(i + 1, "null");
+    }
+
+    menus = new Menu[20];
+    menus[0] = new Menu(1,"Pizza" , 300 , "FOOD" ,"ON", promotion);
+    menus[1] = new Menu(2,"Burger" , 70 , "FOOD" ,"ON", promotion);
+    menus[2] = new Menu(3,"Fried rice" , 50 , "FOOD" ,"ON", promotion);
+    menus[3] = new Menu(4,"Fried chicken" , 40 , "FOOD" ,"ON", promotion);
+    menus[4] = new Menu(5,"Stir-fried basil" , 50 , "FOOD" ,"ON", promotion);
+    menus[5] = new Menu(6,"ale1" , 80 , "DRINK" ,"ON", promotion);
+    menus[6] = new Menu(7,"ale2" , 90 , "DRINK" ,"ON", promotion);
+    menus[7] = new Menu(8,"ale3" , 100 , "DRINK" ,"ON", promotion);
+    menus[8] = new Menu(9,"ale4" , 110 , "DRINK" ,"ON", promotion);
+    menus[9] = new Menu(10,"ale5" , 120 , "DRINK" ,"ON", promotion);
+
     //เริ่มต้นแอพ
     RunApp();
   }
@@ -186,14 +208,14 @@ public class App {
     displayMessageLine("Please select a number.");
     displayMessageLine("(1) Reserve a table");
     displayMessageLine("(2) View table reservation info");
-    displayMessageLine("(3) Order Menu.");
+    displayMessageLine("(3) Order Menu");
     displayMessageLine("(4) View Ordered Menu List");
     displayMessageLine("(0) LogOut");
     displayMessage("Your input : ");
     yourInput = inputInt();
 
     if (yourInput == 0) {
-      displayCustomerRL();
+      RunApp();
     } else if (yourInput == 1) {
       displayReservationTable();
     } else if (yourInput == 2) {
@@ -201,14 +223,41 @@ public class App {
     } else if (yourInput == 3) {
       displayCustomerMenu(); //
     } else if (yourInput == 4) {
-      displayLineCustomer();
-      displayMessageLine("Your Ordered Menu");
       basket.Display_Basket_all(); // เรียกเมธอดเพื่อแสดงรายการอาหารที่สั่ง
+      //displayBasketContents();
     } else {
       displayMessageLine("try again.");
       displayCustomer();
     }
   }
+
+  //   public static void displayBasketContents() {
+  //     App.displayLineCustomer();
+  //     App.displayMessageLine("Basket Contents:");
+
+  //     for (Transaction transaction : Transactions) {
+  //         if (transaction.getReservation().Get_reserve_id() == targetReservationID) {
+  //             for (Menu menu : basket.getOrderedItems()) {
+  //                 App.displayMessageLine("Menu Name: " + menu.Get_menu_name());
+  //                 //App.displayMessageLine("Quantity: " + menu.Get_transaction_menu_amount());
+  //                 App.displayMessageLine("Price: " + menu.Get_menu_price() + " Baht");
+  //                 //App.displayMessageLine("Note: " + menu.Get_transaction_note());
+  //                 App.displayLineCustomer();
+  //             }
+  //         }
+  //     }
+
+  //     App.displayMessageLine("(0) Back");
+  //     App.displayMessage("Your input: ");
+  //     int yourInput = App.inputInt();
+
+  //     if (yourInput == 0) {
+  //         App.displayCustomer();
+  //     } else {
+  //         App.displayMessageLine("try again.");
+  //         displayBasketContents();
+  //     }
+  // }
 
   //หน้าของ Customer หน้าตรวจสอบสถาณะโต๊ะ Customer
   public static void displayReservationTable() {
@@ -217,37 +266,49 @@ public class App {
     displayMessageLine("Hi : " + customer.Get_person_username());
     displayMessageLine("Please select a number.");
     //reservation.Check_table_status();
-    displayMessageLine(
-      "Table ID : " +
-      table.Get_table_id() +
-      " - Status : " +
-      table.Get_table_status()
-    );
+    //displayMessageLine("Table ID : " +table.Get_table_id() +" - Status : " +table.Get_table_status());
+    for (int i = 0; i < tables.length; i++) {
+      if (tables[i].Get_table_status().equals("null")) {
+        displayMessageLine(
+          "Table ID : " +
+          (tables[i].Get_table_id()) +
+          " - Status : " +
+          tables[i].Get_table_status()
+        );
+      }
+    }
     displayMessageLine("(0) Back");
     displayMessage("Your input : ");
     yourInput = inputInt();
 
     if (yourInput == 0) {
       displayCustomer();
-    } else if (yourInput >= 1 && yourInput <= 20 && table.Get_table_status().equals("null")) {
+    } else if (
+      yourInput >= 1 &&
+      yourInput <= 20 &&
+      tables[yourInput - 1].Get_table_status().equals("null")
+    ) {
       displayMessage("Enter Y to confirm : ");
       chack2 = input();
       if (chack2.equals("Y")) {
-        table.Set_table_status("Full");
+        if ((reservation.Get_reserve_customer().Get_person_id() > 0)) {
+          displayMessageLine("You have already reserved a table.");
+          displayCustomer();
+        }
+        tables[yourInput - 1].Set_table_status("Full");
         int randomNumber = ThreadLocalRandom.current().nextInt(1000, 10000);
-        reservation = new Reservation();
         reservation.Save_table_reservation_information(
           randomNumber,
           LocalDate.now(),
           LocalTime.now(),
           customer,
-          table
+          tables[yourInput - 1]
         );
         reservation.Display_reservation();
         yourInput = App.inputInt();
 
         if (yourInput == 0) {
-          App.displayCustomer();
+          displayCustomer();
         } else {
           App.displayMessageLine("try again.");
           reservation.Display_reservation();
@@ -264,53 +325,62 @@ public class App {
 
   //หน้าของ Customer หน้าดู Menu ของ Customer
   public static void displayCustomerMenu() {
-    displayLineCustomer();
-    displayMessageLine("Place_Status : " + place_status.Get_place_status());
-    displayMessageLine("Hi : " + customer.Get_person_id());
-    displayMessageLine("Promotion "+menu.Get_promotion_details());
-    displayMessageLine("Please select a number.");
-    displayMessageLine("(1) Food");
-    displayMessageLine("(2) Beverages");
-    displayMessageLine("(0) Back");
-    displayMessage("Your input : ");
-    yourInput = inputInt();
-
-    if (yourInput == 0) {
+    if (
+      reservation.Get_reserve_table() == null ||
+      reservation.Get_reserve_table().Get_table_id() < 1
+    ) {
+      displayMessageLine("Pless reserved a table.");
       displayCustomer();
-    } else if (yourInput == 1) {
-      displayFoodMenu(); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
-    } else if (yourInput == 2) {
-      displayMessageLine("Do not have yet.");
     } else {
-      displayMessageLine("try again.");
-      displayCustomerMenu();
+      displayLineCustomer();
+      displayMessageLine("Place_Status : " + place_status.Get_place_status());
+      displayMessageLine("Hi : " + customer.Get_person_id());
+      displayMessageLine("Promotion " + menu.Get_promotion_details());
+      displayMessageLine("Please select a number.");
+      displayMessageLine("(1) Food");
+      displayMessageLine("(2) Beverages");
+      displayMessageLine("(0) Back");
+      displayMessage("Your input : ");
+      yourInput = inputInt();
+      if (yourInput == 0) {
+        displayCustomer();
+      } else if (yourInput == 1) {
+        displayFoodMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร (1) คืออาหาร
+      } else if (yourInput == 2) {
+        displayFoodMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร (2) คือเครื่องดื่ม
+      } else {
+        displayMessageLine("try again.");
+        displayCustomerMenu();
+      }
     }
   }
 
   //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
-  public static void displayFoodMenu() {
+  public static void displayFoodMenu(int x) {
     displayLineCustomer();
-    displayMessageLine("Food Menu");
-    // แสดงรายการอาหารจากฐานข้อมูลหรือรายการที่คุณกำหนด
-    // ตัวอย่าง:
-    // Menu menu1 = new Menu();
-    // menu1.Set_menu_name("Pad Thai");
-    // menu1.Set_menu_price(100.0);
+    displayMessageLine("Menu Page");
     displayMessageLine("Please select a number.");
-    displayMessageLine(
-      "(1) " + menu.Get_menu_name() + " - " + menu.Get_menu_price() + " Baht"
-    );
-    displayMessageLine("(0) Back");
-    displayMessage("Your input : ");
+    for (int i = 0; i < menus.length; i++) {
+        if (x == 1) {
+            if (menus[i] != null && menus[i].Get_menu_status().equals("ON") && menus[i].Get_menu_type().equals("FOOD")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - " + menus[i].Get_menu_price() + " Baht");
+            }
+        } else {
+            if (menus[i] != null && menus[i].Get_menu_status().equals("ON") && menus[i].Get_menu_type().equals("DRINK")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - " + menus[i].Get_menu_price() + " Baht");
+            }
+        }
+    }    
+    displayMessage("Input Menu ID (or (0) for Back): ");
     yourInput = inputInt();
 
     if (yourInput == 0) {
-      displayCustomer();
-    } else if (yourInput == 1) {
-      displayOrderFood(menu); // เรียกเมธอดเพื่อสั่งอาหาร
+      displayCustomerMenu();
+    } else if (menus[yourInput-1] != null && yourInput >= 1 && yourInput <= menus.length) {
+      displayOrderFood(menus[yourInput-1]); // เรียกเมธอดเพื่อสั่งอาหาร
     } else {
       displayMessageLine("try again.");
-      displayFoodMenu();
+      displayFoodMenu(x);
     }
   }
 
@@ -321,6 +391,7 @@ public class App {
     displayMessage("Enter your note : ");
     String note = input();
     basket.AddToBasket(menu, quantity, reservation, note); // เพิ่มรายการอาหารใน Basket
+    //Transactions.add(basket); //001
     displayMessageLine("Added to your basket.");
     displayMessageLine(
       "Total Price: " + basket.CalculateTotalPrice() + " Baht"
@@ -337,25 +408,25 @@ public class App {
     }
   }
 
-  // เพิ่มเมธอดเพื่อแสดงรายการอาหารใน Basket
-  public static void displayOrderedItems() {
-    displayLineCustomer();
-    displayMessageLine("Your Ordered Items");
-    //basket.DisplayOrderedItems();
-    displayMessageLine(
-      "Total Price: " + basket.CalculateTotalPrice() + " Baht"
-    );
-    displayMessageLine("(0) Back");
-    displayMessage("Your input : ");
-    yourInput = inputInt();
+  // // เพิ่มเมธอดเพื่อแสดงรายการอาหารใน Basket
+  // public static void displayOrderedItems() {
+  //   displayLineCustomer();
+  //   displayMessageLine("Your Ordered Items");
+  //   //basket.DisplayOrderedItems();
+  //   displayMessageLine(
+  //     "Total Price: " + basket.CalculateTotalPrice() + " Baht"
+  //   );
+  //   displayMessageLine("(0) Back");
+  //   displayMessage("Your input : ");
+  //   yourInput = inputInt();
 
-    if (yourInput == 0) {
-      displayCustomer();
-    } else {
-      displayMessageLine("try again.");
-      displayOrderedItems();
-    }
-  }
+  //   if (yourInput == 0) {
+  //     displayCustomer();
+  //   } else {
+  //     displayMessageLine("try again.");
+  //     displayOrderedItems();
+  //   }
+  // }
 
   //หน้าของ Employee หน้า Login
   public static void displayEmployeeL() {
@@ -397,21 +468,21 @@ public class App {
       RunApp();
     } else if (yourInput == 1) {
       editPlaceStatus();
-    }else if (yourInput == 2) {
+    } else if (yourInput == 2) {
       displayEmployeeMenu();
-    }else if (yourInput == 3) {
+    } else if (yourInput == 3) {
       displayEmployeeEditPromotion();
-    }else if (yourInput == 4) {
+    } else if (yourInput == 4) {
       viewReservationTable();
-    }else if (yourInput == 5) {
+    } else if (yourInput == 5) {
       displayLineEmployee();
       displayMessageLine("Ordered Menu");
       basket.Display_Basket_alle();
-    }else if (yourInput == 6) {
+    } else if (yourInput == 6) {
       displayEmployeeMenuOnOff();
-    }else if (yourInput == 7) {
+    } else if (yourInput == 7) {
       displayEmployeeReceipt();
-    }else {
+    } else {
       displayMessageLine("try again.");
       displayEmployee();
     }
@@ -431,7 +502,7 @@ public class App {
     yourInput = inputInt();
 
     if (yourInput == 0) {
-      RunApp();
+      displayEmployee();
     } else if (yourInput == 1) {
       place_status.Set_places_status("Open");
       displayEmployee();
@@ -453,8 +524,7 @@ public class App {
     reservation.Get_table_reservation_information();
   }
 
-
-    //หน้าของ Employee หน้าดู Menu ของ Employee
+  //หน้าของ Employee หน้าดู Menu ของ Employee
   public static void displayEmployeeMenu() {
     displayLineEmployee();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
@@ -467,58 +537,162 @@ public class App {
     yourInput = inputInt();
 
     if (yourInput == 0) {
-      displayCustomer();
+      displayEmployee();
     } else if (yourInput == 1) {
-      displayEmployeeFoodMenu(); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
+      displayEmployeeMenu(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
     } else if (yourInput == 2) {
-      displayMessageLine("Do not have yet.");
+      displayEmployeeMenu(yourInput);
     } else {
       displayMessageLine("try again.");
       displayEmployeeMenu();
     }
   }
 
-  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
-  public static void displayEmployeeFoodMenu() {
+    //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+  public static void displayEmployeeMenu(int x) {
     displayLineEmployee();
-    displayMessageLine("Food Menu");
     displayMessageLine("Please select a number.");
-    displayMessageLine(
-      "(1) ID : "+ menu.Get_menu_id() +" - "+ menu.Get_menu_name() + " - " + menu.Get_menu_price() + " Baht"
-    );
     displayMessageLine("(1) Edit Price");
     displayMessageLine("(2) Add Menu");
     displayMessageLine("(3) Delete Menu");
     displayMessageLine("(0) Back");
-    displayMessage("Input Menu ID : ");
+    displayMessage("Your input : ");
     yourInput = inputInt();
 
     if (yourInput == 0) {
-      displayCustomer();
+      displayEmployeeMenu();
     } else if (yourInput == 1) {
-      displayEmployeeEditFoodPrice(menu); // เรียกเมธอดเพื่อสั่งอาหาร
+      displayEmployeeEditFoodPrice(x); // เรียกเมธอดเพื่อสั่งอาหาร
     } else if (yourInput == 2) {
-      displayMessageLine("Do not have yet.");
-    }else if (yourInput == 3) {
-      displayMessageLine("Do not have yet.");
-    }else {
+      displayEmployeeAddMenu(x);
+    } else if (yourInput == 3) {
+      displayEmployeeDeleteMenu(x);
+    } else {
       displayMessageLine("try again.");
-      displayEmployeeFoodMenu();
+      displayEmployeeMenu(x);
     }
   }
 
+  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+  public static void displayEmployeeEditFoodPrice(int x) {
+    displayLineEmployee();
+    displayMessageLine("Edit Menu Price");
+    displayMessageLine("Please select a number.");
+    for (int i = 0; i < menus.length; i++) {
+        if (x == 1) {
+            if (menus[i] != null && menus[i].Get_menu_status().equals("ON") && menus[i].Get_menu_type().equals("FOOD")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - " + menus[i].Get_menu_price() + " Baht");
+            }
+        } else {
+            if (menus[i] != null && menus[i].Get_menu_status().equals("ON") && menus[i].Get_menu_type().equals("DRINK")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - " + menus[i].Get_menu_price() + " Baht");
+            }
+        }
+    }    
+    displayMessage("Input Menu ID (or (0) for Back): ");
+    yourInput = inputInt();
+
+    if (yourInput == 0) {
+      displayEmployeeMenu(x);
+    } else if (menus[yourInput-1] != null && yourInput >= 1 && yourInput <= menus.length) {
+      displayEmployeeEditFoodPrice2(menus[yourInput-1],x); // เรียกเมธอดเพื่อสั่งอาหาร
+    }else {
+      displayMessageLine("try again.");
+      displayEmployeeEditFoodPrice(x);
+    }
+  }
+
+  
   // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
-  public static void displayEmployeeEditFoodPrice(Menu menu) {
+  public static void displayEmployeeEditFoodPrice2(Menu menu,int x) {
     displayMessageLine("Menu ID : " + menu.Get_menu_id());
     displayMessageLine("Menu Name : " + menu.Get_menu_name());
     displayMessage("edit Price : ");
     menu.Set_menu_price(inputInt());
     displayMessageLine("Edit Price succeed.");
-    displayEmployeeFoodMenu();
+    displayEmployeeEditFoodPrice(x);
   }
 
 
-      //หน้าของ Employee หน้าดู Menu ของ Employee
+  public static void displayEmployeeAddMenu(int x) {
+    displayLineEmployee();
+    displayMessageLine("Add Menu Page");
+    
+    for (int i = 0; i < menus.length; i++) {
+        if (x == 1) {
+            if (menus[i] == null) {
+                menus[i] = new Menu();
+                displayMessageLine("add Menu ID : " + (i+1));
+                menus[i].Set_menu_id(i+1);
+                displayMessage("add Menu Name : ");
+                menus[i].Set_menu_name(input());
+                displayMessage("add Menu Price : ");
+                menus[i].Set_menu_price(inputInt()+0.0);
+                displayMessageLine("add Menu Type : FOOD");
+                menus[i].Set_menu_type("FOOD");
+                menus[i].Set_menu_status("ON");
+                menus[i].Set_promotion(promotion);
+                displayMessageLine("Add Menu succeed.");
+                displayEmployeeMenu(x);
+            }
+        } else {
+            if (menus[i] == null) {
+                menus[i] = new Menu();
+                displayMessageLine("add Menu ID : " + (i+1));
+                menus[i].Set_menu_id(i+1);
+                displayMessage("add Menu Name : ");
+                menus[i].Set_menu_name(input());
+                displayMessage("add Menu Price : ");
+                menus[i].Set_menu_price(inputInt()+0.0);
+                displayMessageLine("add Menu Type : DRINK");
+                menus[i].Set_menu_type("DRINK");
+                menus[i].Set_menu_status("ON");
+                menus[i].Set_promotion(promotion);
+                displayMessageLine("Add Menu succeed.");
+                displayEmployeeMenu(x);
+            }
+        }
+    }
+    displayMessageLine("FULL MANU");
+    displayEmployeeMenu(x);
+  }
+
+
+  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+  public static void displayEmployeeDeleteMenu(int x) {
+    displayLineEmployee();
+    displayMessageLine("Delete Menu Page");
+    displayMessageLine("Please select a number.");
+    for (int i = 0; i < menus.length; i++) {
+        if (x == 1) {
+            if (menus[i] != null && menus[i].Get_menu_status().equals("ON") && menus[i].Get_menu_type().equals("FOOD")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - " + menus[i].Get_menu_price() + " Baht");
+            }
+        } else {
+            if (menus[i] != null && menus[i].Get_menu_status().equals("ON") && menus[i].Get_menu_type().equals("DRINK")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - " + menus[i].Get_menu_price() + " Baht");
+            }
+        }
+    }    
+    displayMessage("Input Menu ID (or (0) for Back): ");
+    yourInput = inputInt();
+
+    if (yourInput == 0) {
+      displayEmployeeMenu(x);
+    } else if (menus[yourInput-1] != null && yourInput >= 1 && yourInput <= menus.length) {
+      menus[yourInput-1] = null; // เรียกเมธอดเพื่อสั่งอาหาร
+      displayMessageLine("Deleted Menu succeed.");
+      displayEmployeeMenu(x);
+    }else {
+      displayMessageLine("try again.");
+      displayEmployeeDeleteMenu(x);
+    }
+  }
+
+  
+
+
+  //หน้าของ Employee หน้าดู Menu ของ Employee
   public static void displayEmployeeMenuOnOff() {
     displayLineEmployee();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
@@ -533,9 +707,9 @@ public class App {
     if (yourInput == 0) {
       displayCustomer();
     } else if (yourInput == 1) {
-      displayEmployeeFoodMenuOnOff(); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
+      displayEmployeeFoodMenuOnOff(yourInput); // เรียกเมธอดใหม่เพื่อแสดงเมนูอาหาร
     } else if (yourInput == 2) {
-      displayMessageLine("Do not have yet.");
+      displayEmployeeFoodMenuOnOff(yourInput);
     } else {
       displayMessageLine("try again.");
       displayEmployee();
@@ -543,126 +717,156 @@ public class App {
   }
 
   //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
-  public static void displayEmployeeFoodMenuOnOff() {
+  public static void displayEmployeeFoodMenuOnOff(int x) {
     displayLineEmployee();
     displayMessageLine("Edit Food Status");
     displayMessageLine("Please select a number.");
-    displayMessageLine(
-      "(1) ID : "+ menu.Get_menu_id() +" - "+ menu.Get_menu_name() + " - Status : " + menu.Get_menu_status()
-    );
-    displayMessageLine("(0) Back");
-    displayMessage("Input Menu ID : ");
+    for (int i = 0; i < menus.length; i++) {
+        if (x == 1) {
+            if (menus[i] != null && menus[i].Get_menu_type().equals("FOOD")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - Status : " + menus[i].Get_menu_status());
+            }
+        } else {
+            if (menus[i] != null && menus[i].Get_menu_type().equals("DRINK")) {
+                displayMessageLine("Menu ID: " + menus[i].Get_menu_id() + " - Name: " + menus[i].Get_menu_name() + " - Status : " + menus[i].Get_menu_status());
+            }
+        }
+    }
+    displayMessage("Input Menu ID (or (0) for Back): ");
     yourInput = inputInt();
     if (yourInput == 0) {
-      displayEmployee();
-    } else if (yourInput == 1) {
-      displayEmployeeEditFoodOnoff(menu); // เรียกเมธอดเพื่อสั่งอาหาร
+      displayEmployeeMenuOnOff();
+    } else if (menus[yourInput-1] != null && yourInput >= 1 && yourInput <= menus.length) {
+      displayEmployeeEditFoodOnoff(menus[yourInput-1],x); // เรียกเมธอดเพื่อสั่งอาหาร
     } else {
       displayMessageLine("try again.");
-      displayEmployeeFoodMenuOnOff();
+      displayEmployeeFoodMenuOnOff(x);
     }
   }
 
   // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
-  public static void displayEmployeeEditFoodOnoff(Menu menu) {
+  public static void displayEmployeeEditFoodOnoff(Menu menus,int x) {
     displayMessageLine("Please select a number.");
     displayMessageLine("(1) ON");
     displayMessageLine("(2) OFF");
     displayMessageLine("(0) Back");
     displayMessage("Your input : ");
     yourInput = inputInt();
-    
+
     if (yourInput == 0) {
-      displayEmployeeFoodMenuOnOff();
+      displayEmployeeMenuOnOff();
     } else if (yourInput == 1) {
-      menu.Set_menu_status("ON");
-      displayMessageLine("EditFood succeed.");
-      displayEmployeeFoodMenuOnOff();
+      menus.Set_menu_status("ON");
+      displayMessageLine("Edit Status Menu succeed.");
+      displayEmployeeFoodMenuOnOff(x);
     } else if (yourInput == 2) {
-      menu.Set_menu_status("OFF");
-      displayMessageLine("EditFood succeed.");
-      displayEmployeeFoodMenuOnOff();
+      menus.Set_menu_status("OFF");
+      displayMessageLine("Edit Status Menu succeed.");
+      displayEmployeeFoodMenuOnOff(x);
     } else {
       displayMessageLine("try again.");
-      displayEmployeeEditFoodOnoff(menu);
+      displayEmployeeEditFoodOnoff(menus,x);
     }
-
   }
 
   //หน้าของ Employee หน้าปริ้นใบเสร็จ Employee
   public static void displayEmployeeReceipt() {
     displayLineEmployee();
-    displayMessageLine("View Table");
+    displayMessageLine("Print Receipt Page.");
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
     displayMessageLine("Hi : " + employee.Get_person_username());
     displayMessageLine("Order ID : " + basket.Get_Transaction_id());
     displayMessageLine("Reserve ID : " + reservation.Get_reserve_id());
-    displayMessageLine("Table ID : " + reservation.Get_reserve_table().Get_table_id());
+    displayMessageLine(
+      "Table ID : " + reservation.Get_reserve_table().Get_table_id()
+    );
     displayMessageLine("Time : " + reservation.Get_reserve_date());
     displayMessageLine("Date : " + reservation.Get_reserve_time());
-    displayMessageLine("Input Order ID for Print Receipt : ");
+    displayMessage("Input Order ID for Print Receipt : ");
+    
     yourInput = inputInt();
 
-    if(yourInput == receipt.Get_Transaction_id()){
-      displayMessageLine("Total : "+receipt.Get_transaction_menu_total_amount() + " Bath");
+    if (yourInput == basket.Get_Transaction_id()) {
+      displayMessageLine(
+        "Total : " + receipt.Get_transaction_menu_total_amount() + " Bath"
+      );
       displayMessage("input money : ");
-      receipt.Set_money_received(inputInt()+0.0);
+      receipt.Set_money_received(inputInt() + 0.0);
       int randomNumber = ThreadLocalRandom.current().nextInt(1000, 10000);
-      displayMessageLine("Receipt Number : "+ randomNumber);
-      displayMessageLine("Table Number : "+ receipt.Get_Transaction_table_id());
+      displayMessageLine("Receipt Number : " + randomNumber);
+      displayMessageLine(
+        "Table Number : " + receipt.Get_Transaction_table_id()
+      );
       displayMessageLine("Date : " + LocalDate.now());
       displayMessageLine("Time : " + LocalTime.now());
-      displayMessageLine("Menu Name : "+ receipt.Get_transaction_menu_name() + "จำนวน x" + receipt.Get_transaction_menu_amount() + "ราคา" + receipt.Get_transaction_total_price() +  "Baht");
+      displayMessageLine(
+        "Menu Name : " +
+        receipt.Get_transaction_menu_name() +
+        " - x" +
+        receipt.Get_transaction_menu_amount() +
+        " Price " +
+        receipt.Get_transaction_total_price() +
+        " Baht"
+      );
       displayMessageLine("Note : " + receipt.Get_note());
-      displayMessageLine("VAT 7% : " + receipt.Get_receipt_vat()*receipt.Get_transaction_total_price() + " Baht"  );
-      displayMessageLine("Total : " + receipt.Get_transaction_total_price() + " Baht");
-      displayMessageLine("Amount Received : " + receipt.Get_money_received() + " Baht");
-      displayMessageLine("Change : " + receipt.Get_receipt_change() + " Baht" );
+      displayMessageLine(
+        "VAT 7% : " +
+        receipt.Get_receipt_vat() *
+        receipt.Get_transaction_total_price() +
+        " Baht"
+      );
+      displayMessageLine(
+        "Total : " + receipt.Get_transaction_total_price() + " Baht"
+      );
+      displayMessageLine(
+        "Amount Received : " + receipt.Get_money_received() + " Baht"
+      );
+      displayMessageLine("Change : " + receipt.Get_receipt_change() + " Baht");
       table.Set_table_status("null");
       reservation.Cancel_table_reservation(reservation.Get_reserve_id());
       receipt.Get_transaction_menu_total_amount();
       displayEmployee();
-
-    }else{
+    } else {
       displayMessageLine("try again.");
       displayEmployeeReceipt();
     }
-
-
   }
 
-     //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
+  //เพิ่มเมธอดใหม่เพื่อแสดงเมนูอาหาร
   public static void displayEmployeeEditPromotion() {
     displayLineEmployee();
     displayMessageLine("Promotion Edit Page");
     displayMessageLine("Please select a number.");
     displayMessageLine(
-      "(1) ID : "+ menu.Get_promotion_id() +" - "+ menu.Get_promotion_details() + " - " + menu.Get_menu_price() + " Baht"
+      "(1) ID : " +
+      menu.Get_promotion_id() +
+      " - " +
+      menu.Get_promotion_details() +
+      " - " +
+      menu.Get_menu_price() +
+      " Baht"
     );
-    displayMessageLine("(1) Edit");
-    displayMessageLine("(0) Back");
-    displayMessage("Input Menu ID : ");
+    displayMessage("Input Menu ID (or (0) for Back): ");
     yourInput = inputInt();
 
     if (yourInput == 0) {
       displayCustomer();
     } else if (yourInput == 1) {
       displayEmployeeEditPromotion(menu); // เรียกเมธอดเพื่อสั่งอาหาร
-    }else {
+    } else {
       displayMessageLine("try again.");
       displayEmployeeEditPromotion();
     }
   }
 
-    // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
+  // เพิ่มเมธอดใหม่เพื่อสั่งอาหาร
   public static void displayEmployeeEditPromotion(Menu menu) {
     displayMessageLine("Menu ID : " + menu.Get_menu_id());
     displayMessage("edit Details : ");
     menu.Set_promotion_details(input());
     displayMessage("edit Price : ");
-    menu.Set_promotion_price(inputInt()+0.0);
+    menu.Set_promotion_price(inputInt() + 0.0);
     displayMessageLine("Edit Promotion succeed.");
     displayEmployeeEditPromotion();
   }
-
 }

@@ -51,8 +51,15 @@ public class Menu {
         this.promotion.Set_promotion_price(price);
     }
 
+    public void Set_promotion(Promotion promotion) {
+        this.promotion = promotion;
+    }
+
     public int Get_menu_id(){
         return this.menu_id;
+    }
+    public void Set_menu_id(int id){
+        this.menu_id = id;
     }
 
     public String Get_menu_name() {

@@ -1,9 +1,13 @@
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Receipt extends Transaction{
     private double receipt_vat;
     private double receipt_change;
     private double receipt_money;
+    
 
     public Receipt() {
         Set_receipt_vat(0.07);
@@ -42,13 +46,14 @@ public class Receipt extends Transaction{
         this.receipt_change = (Get_transaction_total_price()*receipt_vat)+Get_transaction_total_price();
     }
 
-    public void Print_receipt(int receipt_id) {
-
-    }
-
     private void Delete_receipt_detail(int receipt_id) {
         Set_transaction_id(-1);
 
+
+    }
+
+
+    public void Print_receipt(int receipt_id) {
 
     }
 }

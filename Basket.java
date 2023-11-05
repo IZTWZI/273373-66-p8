@@ -4,25 +4,21 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Basket extends Transaction{
 
-    private ArrayList<Menu> orderedItems;
-    private Menu menu;
     private Reservation reservation;
 
 
     public Basket() {
-        orderedItems = new ArrayList<>();
-        menu = new Menu();
-        reservation = new Reservation();
+
+    }
+    public Basket(Reservation reservation) {
+        this.reservation = reservation;
     }
     public Basket(Menu menu,Reservation reservation, String note) {
         super(menu, reservation, note);
     }
-
+    
 
     public void AddToBasket(Menu menu, int quantity,Reservation reservation, String note) {
-        //menu.Set_quantity(quantity);
-        orderedItems.add(menu);
-
         int randomNumber = ThreadLocalRandom.current().nextInt(1000, 10000);
         Set_transaction_id(randomNumber);
         Set_transaction_table_id(reservation.Get_reserve_table().Get_table_id());
@@ -35,38 +31,11 @@ public class Basket extends Transaction{
         Set_transaction_menu_type(menu.Get_menu_type());
         Set_transaction_total_price(menu.Get_menu_price()*quantity);
 
-        
-
     }
 
     // เพิ่มเมธอดเพื่อคำนวณราคารายการอาหารทั้งหมดใน Basket
     public double CalculateTotalPrice() {
-        // double total = 0.0;
-        // for (Menu menu : orderedItems) {
-        //  //   total += menu.CalculateTotalPrice();
-        // }
-        
         return Get_transaction_total_price();
-    }
-
-    // เพิ่มเมธอดเพื่อแสดงรายการอาหารที่สั่ง
-    // public void DisplayOrderedItems() {
-    //     for (Menu menu : orderedItems) {
-    //         System.out.println("Name: " + menu.Get_menu_name());
-    //         System.out.println("Quantity: " + menu.Get_quantity());
-    //         System.out.println("Price: " + menu.CalculateTotalPrice());
-    //         System.out.println("-----------");
-    //     }
-    // }
-
-    // เพิ่มเมธอดเพื่อลบรายการอาหารออกจาก Basket
-    public void RemoveFromBasket(Menu menu) {
-        orderedItems.remove(menu);
-    }
-
-    // เพิ่มเมธอดเพื่อลบรายการอาหารทั้งหมดออกจาก Basket
-    public void ClearBasket() {
-        orderedItems.clear();
     }
 
     public void Order() {
@@ -77,6 +46,12 @@ public class Basket extends Transaction{
     }
 
     public void Display_Basket_all() {
+        if (Get_Transaction_id() < 1) {
+            App.displayMessageLine("Please order Menu.");
+            App.displayCustomer();
+          }
+        App.displayLineCustomer();
+        App.displayMessageLine("Your Ordered Menu");
         App.displayMessageLine("Date : " + Get_transaction_date());
         App.displayMessageLine("Time : " + Get_transaction_time());
         App.displayMessageLine("Table Number : " + Get_Transaction_table_id());
@@ -118,4 +93,6 @@ public class Basket extends Transaction{
             Display_Basket_alle();
           }
     }
+
+    
 }
