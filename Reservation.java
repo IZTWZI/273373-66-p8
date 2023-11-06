@@ -55,7 +55,7 @@ public class Reservation {
   }
 
   //บันทึกข้อมูลการจองโต๊ะ
-  public void Save_table_reservation_information(int reserve_id,LocalDate reservationDate,LocalTime reservationTime,Customer customer,Table table) {
+  public void Save_table_reservation_information(int reserve_id,LocalTime reservationTime,LocalDate reservationDate,Customer customer,Table table) {
     Set_reserve_id(reserve_id);
     Set_reserve_time(reservationTime);
     Set_reserve_date(reservationDate);

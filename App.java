@@ -3,6 +3,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
 
 public class App {
 
@@ -82,6 +83,7 @@ public class App {
     for (int i = 0; i < tables.length; i++) {
       tables[i] = new Table(i + 1, "null");
     }
+    menu = new Menu (999,"Fried rice2" , 300 , "FOOD" ,"ON", promotion);
 
     menus = new Menu[20];
     menus[0] = new Menu(1,"Pizza" , 300 , "FOOD" ,"ON", promotion);
@@ -201,6 +203,10 @@ public class App {
     displayLineCustomer();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
     displayMessageLine("Hi : " + customer.Get_person_username());
+    if(place_status.Get_place_status().equals("Close")){
+      displayMessageLine("-----------------*CLOSE*----------------");
+      RunApp();
+    }
     displayMessageLine("Please select a number.");
     displayMessageLine("(1) Reserve a table");
     displayMessageLine("(2) View table reservation info");
@@ -227,7 +233,7 @@ public class App {
   }
 
 
-  //หน้าของ Customer หน้าตรวจสอบสถาณะโต๊ะ+จองโต๊ะ Customer
+  //หน้าของ Customer หน้าตรวจสอบสถานะโต๊ะ+จองโต๊ะ Customer
   public static void displayReservationTable() {
     displayLineCustomer();
     displayMessageLine("Place_Status : " + place_status.Get_place_status());
@@ -261,8 +267,8 @@ public class App {
         int randomNumber = ThreadLocalRandom.current().nextInt(1000, 10000);
         reservation.Save_table_reservation_information(
           randomNumber,
-          LocalDate.now(),
           LocalTime.now(),
+          LocalDate.now(),
           customer,
           tables[yourInput - 1]
         );
@@ -816,7 +822,7 @@ public class App {
 
   //หน้าของ Employee หน้าแก้ไข Promotion
   public static void displayEmployeeEditPromotion(Menu menu) {
-    displayMessageLine("Menu ID : " + menu.Get_menu_id());
+    displayMessageLine("Promotion ID : " + menu.Get_menu_id());
     displayMessage("edit Details : ");
     menu.Set_promotion_details(input());
     displayMessage("edit Price : ");
